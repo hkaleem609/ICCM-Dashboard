@@ -8,12 +8,16 @@
 :root{
   --canvas:#F8F9FA; --card:#FFFFFF; --card-alt:#F2F4F5; --border:#DDE2E5;
   --border-strong:#C2C9CE; --grid:#E8EBED;
-  --teal:#0F6E6E; --teal-700:#0B5555; --teal-050:#EAF3F3;
-  --navy:#12324B; --navy-050:#EAEEF2;
-  --coral:#E4572E; --coral-text:#B03A18; --coral-050:#FDEDE7;
+  /* IHHN brand — identity only (masthead, lockup, header rule, footer) */
+  --brand-blue:#1D3F8F; --brand-red:#ED1C24;
+  /* UI primary / categorical slot 1 */
+  --blue:#2C5AC4; --blue-700:#1D3F8F; --blue-050:#DCE6F6;
+  --navy:#1D3F8F; --navy-050:#DCE6F6;   /* deep brand blue for KPI rules + zebra hover */
+  --alert:#D03B3B; --alert-text:#D03B3B; --alert-050:#FDECEC;
   --ink:#1A1D21; --ink-muted:#5A6472; --ink-inverse:#FFFFFF;
-  --ok:#1F7A78; --warn:#A35A05; --bad:#B03A18;
-  --seq-0:#EAF3F3; --seq-1:#C9E3E1; --seq-2:#9BCFCC; --seq-3:#2E7D7A; --seq-4:#14595A; --seq-5:#E4572E;
+  --ok:#1D3F8F; --warn:#8A5A00; --warn-fill:#fab219; --bad:#D03B3B;
+  /* sequential ramp — one hue, IHHN blue family (spec 07 §3) */
+  --seq-0:#DCE6F6; --seq-1:#BFD0EC; --seq-2:#8FA9DC; --seq-3:#5A7BC8; --seq-4:#2C5AC4; --seq-5:#1D3F8F;
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s7:32px; --s8:48px;
   --fs-display:2.5rem; --fs-h1:1.5rem; --fs-h2:1.1875rem; --fs-h3:1rem;
   --fs-body:0.875rem; --fs-sm:0.8125rem; --fs-cap:0.6875rem; --fs-mono-kpi:1.75rem;
@@ -25,37 +29,51 @@ html{font-size:16px}
 body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--font-sans);
      font-size:var(--fs-body);line-height:1.45;-webkit-font-smoothing:antialiased}
 h1,h2,h3,p,ul,ol,figure,table{margin:0}
-.num,td.num,th.num,.kpi-value,.axis-tick{
+/* Tabular figures ONLY where digits must align vertically: table numeric
+   columns and axis ticks (spec 07 §6.4). Hero KPI values are proportional. */
+.num,td.num,th.num,.axis-tick{
   font-variant-numeric:tabular-nums lining-nums;
   font-feature-settings:"tnum" 1,"lnum" 1;
   font-family:var(--font-num);letter-spacing:-0.01em;white-space:nowrap;
 }
+/* hero numerals: proportional figures in the UI sans, no mono stack */
+.kpi-value,.hero-num{
+  font-family:var(--font-sans);
+  font-variant-numeric:proportional-nums lining-nums;
+  font-feature-settings:"pnum" 1,"lnum" 1;
+  white-space:nowrap;
+}
 .wrap{max-width:1280px;margin:0 auto;padding:0 var(--s6)}
 :where(a,button,[role="tab"],[role="radio"],th button,input,select,summary,[tabindex]):focus-visible{
-  outline:3px solid #0F6E6E;outline-offset:2px;border-radius:3px;
+  outline:3px solid #2C5AC4;outline-offset:2px;border-radius:3px;
 }
 .header :focus-visible{outline-color:#FFFFFF}
 /* ---------- header + tabs ---------- */
-.header{background:var(--navy);color:#fff;padding:var(--s5) 0 var(--s4)}
-.header h1{font-size:var(--fs-h1);font-weight:600;letter-spacing:-0.01em;line-height:1.2}
+.header{background:var(--brand-blue);color:#fff;padding:var(--s5) 0 var(--s4);
+  border-bottom:3px solid var(--brand-red)}
+.header .masthead{display:flex;align-items:center;gap:var(--s5)}
+.header .brandmark{flex:none;display:block}
+.header .titleblock{min-width:0}
+.header h1{font-size:var(--fs-h1);font-weight:600;letter-spacing:-0.01em;line-height:1.2;color:#FFFFFF}
 .header .sub{color:#C7D2DC;font-size:var(--fs-sm);margin-top:var(--s1)}
+@media (max-width:767px){ .header .masthead{flex-direction:column;align-items:flex-start;gap:var(--s3)} }
 .tabbar{background:var(--card);border-bottom:1px solid var(--border-strong);position:sticky;top:0;z-index:40}
 .tabs{display:flex;gap:0;max-width:1280px;margin:0 auto;padding:0 var(--s6)}
 [role="tab"]{appearance:none;background:none;border:0;font-family:inherit;font-size:0.875rem;
   font-weight:500;color:var(--ink-muted);padding:12px var(--s4);min-height:44px;cursor:pointer;
   transition:background-color 120ms ease-out}
 [role="tab"]:hover{background:var(--card-alt)}
-[role="tab"][aria-selected="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -3px 0 var(--teal)}
+[role="tab"][aria-selected="true"]{color:var(--ink);font-weight:600;box-shadow:inset 0 -3px 0 var(--blue)}
 [role="tabpanel"]{padding:var(--s5) 0 var(--s7)}
 [role="tabpanel"]>h1{font-size:var(--fs-h1);font-weight:600;letter-spacing:-0.01em;margin-bottom:var(--s1)}
 .page-sub{color:var(--ink-muted);font-size:var(--fs-sm);margin-bottom:var(--s5)}
 /* ---------- filter chips ---------- */
 .chipbar{max-width:1280px;margin:0 auto;padding:var(--s2) var(--s6) 0;display:flex;gap:var(--s2);
   align-items:center;flex-wrap:wrap}
-.fchip{display:inline-flex;align-items:center;gap:var(--s2);background:var(--teal-050);
-  border:1px solid #9BCFCC;color:var(--ink);border-radius:3px;padding:4px var(--s2);
+.fchip{display:inline-flex;align-items:center;gap:var(--s2);background:var(--blue-050);
+  border:1px solid #8FA9DC;color:var(--ink);border-radius:3px;padding:4px var(--s2);
   font-size:var(--fs-sm);min-height:24px}
-.fchip button{appearance:none;background:none;border:0;color:var(--teal-700);cursor:pointer;
+.fchip button{appearance:none;background:none;border:0;color:var(--blue-700);cursor:pointer;
   font-size:1rem;line-height:1;min-width:24px;min-height:24px;font-family:inherit}
 .chipnote{font-size:var(--fs-sm);color:var(--ink-muted)}
 /* ---------- grid + cards ---------- */
@@ -65,7 +83,7 @@ h1,h2,h3,p,ul,ol,figure,table{margin:0}
 .kpiband{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s4);margin-bottom:var(--s6)}
 .kpiband--4{grid-template-columns:repeat(4,1fr)}
 .card{background:var(--card);border:1px solid var(--border);border-radius:6px;
-  box-shadow:0 1px 2px rgba(18,50,75,.06);padding:var(--s5);min-width:0}
+  box-shadow:0 1px 2px rgba(29,63,143,.06);padding:var(--s5);min-width:0}
 .card__eyebrow{font-size:var(--fs-cap);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
   color:var(--ink-muted);line-height:1.3}
 .card__title{font-size:var(--fs-h2);font-weight:600;color:var(--ink);letter-spacing:-0.01em}
@@ -75,12 +93,12 @@ h1,h2,h3,p,ul,ol,figure,table{margin:0}
   margin-top:var(--s4);padding-top:var(--s2)}
 .kpi{height:112px;display:flex;flex-direction:column;justify-content:center;border-left:3px solid var(--navy);
   padding:var(--s3) var(--s4)}
-.kpi--teal{border-left-color:var(--teal)}
-.kpi--alert{border-left-color:var(--coral);background:var(--coral-050)}
+.kpi--blue{border-left-color:var(--blue)}
+.kpi--alert{border-left-color:var(--alert);background:var(--alert-050)}
 .kpi .kpi-value{font-size:var(--fs-display);font-weight:600;line-height:1.05;letter-spacing:-0.02em;
   color:var(--navy);margin-top:var(--s2)}
-.kpi--teal .kpi-value{color:var(--teal)}
-.kpi--alert .kpi-value{color:var(--coral-text)}
+.kpi--blue .kpi-value{color:var(--blue)}
+.kpi--alert .kpi-value{color:var(--alert-text)}
 .kpi--cond{height:96px}
 .kpi--cond .kpi-value{font-size:var(--fs-mono-kpi);line-height:1.1}
 .kpi .kpi-sub{font-size:var(--fs-sm);color:var(--ink-muted);margin-top:var(--s2)}
@@ -88,7 +106,7 @@ h1,h2,h3,p,ul,ol,figure,table{margin:0}
   width:24px;height:24px;border-radius:50%;font-size:0.75rem;cursor:help;font-family:inherit;line-height:1;padding:0}
 .titlerow{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s6)}
 /* ---------- tables ---------- */
-.scroller{overflow:auto;box-shadow:inset -12px 0 8px -8px rgba(18,50,75,.15)}
+.scroller{overflow:auto;box-shadow:inset -12px 0 8px -8px rgba(29,63,143,.15)}
 .scroller--tall{max-height:560px}
 table{border-collapse:separate;border-spacing:0;width:100%;font-size:var(--fs-body)}
 caption{text-align:left;font-size:var(--fs-sm);color:var(--ink-muted);padding-bottom:var(--s2)}
@@ -111,7 +129,7 @@ th.num .sortbtn{justify-content:flex-end}
 .cell--null{color:var(--ink-muted);text-align:center;background:var(--card)}
 .bar-cell{position:relative;text-align:right;padding-right:var(--s3)}
 .bar-cell::before{content:"";position:absolute;inset:3px auto 3px 3px;width:calc(var(--pct) * 1%);
-  background:#B7DBD9;border-radius:2px;z-index:0}
+  background:#DCE6F6;border-radius:0 4px 4px 0;z-index:0}
 .bar-cell>span{position:relative;z-index:1}
 .twisty{appearance:none;width:24px;height:24px;border:1px solid var(--border-strong);background:var(--card);
   border-radius:3px;cursor:pointer;color:var(--ink);font-family:var(--font-num);font-size:0.75rem;
@@ -124,18 +142,18 @@ tbody tr:focus-visible{scroll-margin-top:104px}
 .sticky-first tbody tr:nth-child(even) td:first-child{background:var(--card-alt)}
 .sticky-first thead th:first-child{z-index:3;background:var(--card-alt)}
 .rowmark{border-left:3px solid transparent}
-.rowmark--top{border-left-color:var(--teal)}
-.rowmark--bottom{border-left-color:var(--coral)}
+.rowmark--top{border-left-color:var(--blue)}
+.rowmark--bottom{border-left-color:var(--alert)}
 .chip{display:inline-block;font-size:var(--fs-cap);font-weight:600;letter-spacing:0.06em;
   text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-left:var(--s2);white-space:nowrap}
-.chip--top{background:var(--teal-050);color:var(--teal-700)}
-.chip--bottom{background:var(--coral-050);color:var(--coral-text)}
+.chip--top{background:var(--blue-050);color:var(--blue-700)}
+.chip--bottom{background:var(--alert-050);color:var(--alert-text)}
 .chip--smalln{background:#FFF6E8;color:var(--warn);border:1px solid #E6D3B0;text-transform:none;
   letter-spacing:0;font-weight:600}
 .sev{display:inline-flex;align-items:center;gap:var(--s2)}
 .swatch{width:8px;height:8px;border-radius:2px;display:inline-block}
-tr.sev-high td{background:var(--coral-050)!important}
-.count-hi{color:var(--coral-text);font-weight:600}
+tr.sev-high td{background:var(--alert-050)!important}
+.count-hi{color:var(--alert-text);font-weight:600}
 /* ---------- charts ---------- */
 figure{margin:0}
 figcaption{font-size:var(--fs-sm);color:var(--ink-muted);margin-top:var(--s2)}
@@ -150,7 +168,7 @@ svg{display:block;max-width:100%;height:auto}
 .legend-rows{margin-top:var(--s4);width:100%}
 .legend-rows td{height:auto;padding:6px var(--s2);border-bottom:1px solid var(--border)}
 details.view-as-table{margin-top:var(--s3);border-top:1px solid var(--border);padding-top:var(--s2)}
-details.view-as-table>summary{font-size:var(--fs-sm);color:var(--teal-700);cursor:pointer;
+details.view-as-table>summary{font-size:var(--fs-sm);color:var(--blue-700);cursor:pointer;
   min-height:24px;font-weight:500}
 details.view-as-table table{margin-top:var(--s2)}
 details.view-as-table td,details.view-as-table th{height:auto;padding:4px var(--s2);font-size:var(--fs-sm)}
@@ -161,8 +179,8 @@ details.view-as-table td,details.view-as-table th{height:auto;padding:4px var(--
   font:inherit;font-size:var(--fs-body);color:var(--ink-muted);padding:0 var(--s4);min-height:44px;cursor:pointer;
   transition:background-color 120ms ease-out}
 .seg [role="radio"]:last-child{border-right:0}
-.seg [role="radio"][aria-checked="true"]{background:var(--teal-050);color:var(--ink);font-weight:600;
-  box-shadow:inset 0 -3px 0 var(--teal)}
+.seg [role="radio"][aria-checked="true"]{background:var(--blue-050);color:var(--ink);font-weight:600;
+  box-shadow:inset 0 -3px 0 var(--blue)}
 label.ctl{font-size:var(--fs-sm);color:var(--ink-muted);display:flex;align-items:center;gap:var(--s2)}
 input[type=text],input[type=number],select{font:inherit;font-size:var(--fs-body);padding:var(--s2);
   border:1px solid #8A959D;border-radius:4px;background:var(--card);color:var(--ink);min-height:36px}
@@ -178,12 +196,12 @@ input[type=text],input[type=number],select{font:inherit;font-size:var(--fs-body)
 .tb-nums .v{font-size:var(--fs-mono-kpi);font-weight:600;color:var(--ink-muted);line-height:1.1}
 .tb-nums .l{font-size:var(--fs-sm);color:var(--ink-muted);margin-top:var(--s1)}
 .meter{height:2px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden;width:90px}
-.meter i{display:block;height:100%;background:var(--teal)}
-.alert-tile{background:var(--coral-050);border:1px solid var(--border);border-left:3px solid var(--coral);
+.meter i{display:block;height:100%;background:var(--blue)}
+.alert-tile{background:var(--alert-050);border:1px solid var(--border);border-left:3px solid var(--alert);
   border-radius:6px;padding:var(--s4)}
-.alert-tile .v{font-size:var(--fs-display);font-weight:600;color:var(--coral-text);line-height:1.05}
+.alert-tile .v{font-size:var(--fs-display);font-weight:600;color:var(--alert-text);line-height:1.05}
 .alert-tile .l{font-size:var(--fs-cap);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
-  color:var(--coral-text);margin-top:var(--s2)}
+  color:var(--alert-text);margin-top:var(--s2)}
 .alert-tile .d{font-size:var(--fs-sm);color:var(--ink-muted);margin-top:var(--s2)}
 .hstack{display:flex;gap:var(--s4);align-items:flex-start}
 .tiny{font-size:var(--fs-sm);color:var(--ink-muted)}
@@ -222,9 +240,26 @@ input[type=text],input[type=number],select{font:inherit;font-size:var(--fs-body)
 </head>
 <body>
 <header class="header">
-  <div class="wrap">
-    <h1>IHHN · Global Fund iCCM — Malaria Surveillance, Zhob</h1>
-    <p class="sub" id="hdrsub"></p>
+  <div class="wrap masthead">
+    <!-- BRAND LOCKUP — placeholder built from the IHHN palette (spec 07 §1).
+         Drop the official IHHN logo asset in HERE, replacing this whole <svg>.
+         It must stay inline (inline SVG or a data: URI) — this artifact makes
+         no network requests. Keep width ~264px / height ~56px and the
+         role="img" + aria-label so the accessible name survives. -->
+    <svg class="brandmark" width="264" height="56" viewBox="0 0 264 56" role="img"
+         aria-label="Indus Hospital and Health Network">
+      <rect x="0" y="0" width="264" height="56" rx="4" fill="#FFFFFF"/>
+      <rect x="8" y="8" width="40" height="40" rx="3" fill="#ED1C24"/>
+      <path d="M18 16h6v7h8v-7h6v24h-6v-11h-8v11h-6z" fill="#FFFFFF"/>
+      <text x="58" y="25" fill="#1D3F8F" font-family="system-ui,Arial,sans-serif"
+            font-size="13" font-weight="700" letter-spacing="0.055em">INDUS HOSPITAL</text>
+      <text x="58" y="43" font-family="system-ui,Arial,sans-serif"
+            font-size="13" font-weight="700" letter-spacing="0.055em"><tspan fill="#ED1C24">&amp;</tspan><tspan fill="#1D3F8F" dx="4">HEALTH NETWORK</tspan></text>
+    </svg>
+    <div class="titleblock">
+      <h1>IHHN · Global Fund iCCM — Malaria Surveillance, Zhob</h1>
+      <p class="sub" id="hdrsub"></p>
+    </div>
   </div>
 </header>
 <div class="tabbar">
@@ -265,38 +300,62 @@ var rate = function(num,den){ return P1(num/den*100) + " (" + N(num) + " / " + N
 /* ---------- 2. colour scales ---------- */
 /* §2.3 sequential — fixed transmission bands, NOT min-max normalised */
 function seq(v){
-  if(v < 3)    return ["#EAF3F3","#1A1D21","0.0-2.9%"];
-  if(v < 6)    return ["#C9E3E1","#1A1D21","3.0-5.9%"];
-  if(v <= 9.0) return ["#9BCFCC","#12324B","6.0-9.0%"];
-  if(v < 15)   return ["#2E7D7A","#FFFFFF","9.1-14.9%"];
-  if(v < 25)   return ["#14595A","#FFFFFF","15.0-24.9%"];
-  return ["#E4572E","#1A1D21","25%+"];
+  if(v < 3)    return ["#DCE6F6","#1A1D21","0.0-2.9%"];
+  if(v < 6)    return ["#BFD0EC","#1A1D21","3.0-5.9%"];
+  if(v <= 9.0) return ["#8FA9DC","#1A1D21","6.0-9.0%"];
+  if(v < 15)   return ["#5A7BC8","#FFFFFF","9.1-14.9%"];
+  if(v < 25)   return ["#2C5AC4","#FFFFFF","15.0-24.9%"];
+  return ["#1D3F8F","#FFFFFF","25%+"];
 }
 /* inverted sequential for coverage/completeness: low value = dark */
 function seqInv(v){
   var d = 100 - v;
-  if(d < 1)  return ["#EAF3F3","#1A1D21"];
-  if(d < 2)  return ["#C9E3E1","#1A1D21"];
-  if(d < 5)  return ["#9BCFCC","#12324B"];
-  if(d < 10) return ["#2E7D7A","#FFFFFF"];
-  if(d < 20) return ["#14595A","#FFFFFF"];
-  return ["#E4572E","#1A1D21"];
+  if(d < 1)  return ["#DCE6F6","#1A1D21"];
+  if(d < 2)  return ["#BFD0EC","#1A1D21"];
+  if(d < 5)  return ["#8FA9DC","#1A1D21"];
+  if(d < 10) return ["#5A7BC8","#FFFFFF"];
+  if(d < 20) return ["#2C5AC4","#FFFFFF"];
+  return ["#1D3F8F","#FFFFFF"];
 }
-/* §2.4 diverging — dev = value - midpoint, already sign-flipped by caller
-   where high is good (teal must always mean "better") */
+/* spec 07 §4 diverging — dev = value - midpoint, already sign-flipped by the
+   caller where high is good, so BLUE always means "better than average".
+   Midpoint stop is a neutral gray, never a hue. */
 function div(dev){
-  if(dev <= -6) return ["#1F7A78","#FFFFFF"];
-  if(dev <= -3) return ["#7FBFBC","#12324B"];
-  if(dev <= -1) return ["#D6EAE8","#1A1D21"];
-  if(dev <   1) return ["#F1F1EF","#1A1D21"];
-  if(dev <   3) return ["#F8D3C6","#1A1D21"];
-  if(dev <   6) return ["#EF9877","#12324B"];
-  return ["#C7431B","#FFFFFF"];
+  if(dev <= -6) return ["#1D3F8F","#FFFFFF"];
+  if(dev <= -3) return ["#5A7BC8","#FFFFFF"];
+  if(dev <= -1) return ["#BFD0EC","#1A1D21"];
+  if(dev <   1) return ["#F0EFEC","#1A1D21"];
+  if(dev <   3) return ["#F6C9C0","#1A1D21"];
+  if(dev <   6) return ["#E08A78","#1A1D21"];
+  return ["#D03B3B","#FFFFFF"];
 }
-var C = { pv:"#0F6E6E", pf:"#12324B", mixed:"#6E9C55", neg:"#C2C9CE",
-          male:"#12324B", female:"#3E8F8C", al:"#0F6E6E", cq:"#7FBFBC",
-          pq:"#14595A", nodrug:"#E4572E", teal:"#0F6E6E", navy:"#12324B",
-          coral:"#E4572E", grid:"#E8EBED" };
+/* spec 07 §2 categorical theme — FROZEN, fixed order, never cycled.
+   slot1 #2C5AC4 = P. vivax / AL / Male · slot2 #eb6834 = P. falciparum /
+   Female · slot3 #0ca35f = Mixed / Chloroquine. Status red is NOT a series
+   colour and no series colour is used for status. */
+var C = { pv:"#2C5AC4", pf:"#eb6834", mixed:"#0ca35f", neg:"#C2C9CE",
+          male:"#2C5AC4", female:"#eb6834", al:"#2C5AC4", cq:"#0ca35f",
+          nodrug:"#D03B3B", blue:"#2C5AC4", brandBlue:"#1D3F8F",
+          brandRed:"#ED1C24", alert:"#D03B3B", warn:"#fab219",
+          ink:"#1A1D21", inkMuted:"#5A6472", grid:"#E8EBED" };
+
+/* ---------- 2b. mark geometry helpers (spec 07 §6.3) ----------
+   4px rounded data-ends, anchored square to the baseline. */
+function barV(x,y,w,h,r){            /* vertical bar, rounded top only */
+  if(h<=0) return "";
+  r=Math.min(r, w/2, h);
+  if(r<=0) return "M"+x+","+y+"h"+w+"v"+h+"h-"+w+"Z";
+  return "M"+x+","+(y+h)+"V"+(y+r)+"a"+r+","+r+" 0 0 1 "+r+",-"+r+
+         "h"+(w-2*r)+"a"+r+","+r+" 0 0 1 "+r+","+r+"V"+(y+h)+"Z";
+}
+function barH(x,y,w,h,r,dir){        /* horizontal bar; dir 1 = round right end */
+  if(w<=0) return "";
+  r=Math.min(r, w/2, h/2);
+  if(dir>0) return "M"+x+","+y+"h"+(w-r)+"a"+r+","+r+" 0 0 1 "+r+","+r+
+                   "v"+(h-2*r)+"a"+r+","+r+" 0 0 1 -"+r+","+r+"H"+x+"Z";
+  return "M"+(x+w)+","+y+"H"+(x+r)+"a"+r+","+r+" 0 0 0 -"+r+","+r+
+         "v"+(h-2*r)+"a"+r+","+r+" 0 0 0 "+r+","+r+"H"+(x+w)+"Z";
+}
 
 /* ---------- 3. cell builders ---------- */
 function heatSeq(v, label, aria){
@@ -356,53 +415,77 @@ var TOT = DATA.kpi;
 /* ============================================================
    PAGE 1 — EXECUTIVE SURVEILLANCE
    ============================================================ */
-function comboChart(){
-  var W=820,H=330,ml=56,mr=58,mt=22,mb=52;
-  var pw=W-ml-mr, ph=H-mt-mb;
-  var m=DATA.monthly, yMax=2600, y2Max=20;
-  var band=pw/m.length, bw=band*0.6;
-  var y  = function(v){ return mt+ph-(v/yMax)*ph; };
-  var y2 = function(v){ return mt+ph-(v/y2Max)*ph; };
+/* Spec 07 §6.1 — NO DUAL AXIS. Two vertically stacked panels that share ONE
+   x-axis: upper = RDTs performed (bars), lower = test positivity (line).
+   Identical left margin and identical band x-positions, so the columns of the
+   two panels line up exactly. X labels are drawn once, beneath the lower panel. */
+function stackedPanels(){
+  var W=820, ml=56, mr=24, pw=W-ml-mr;
+  var m=DATA.monthly;
+  var t1=26, ph1=170, b1=t1+ph1;                 /* upper panel: volume */
+  var t2=b1+56, ph2=104, b2=t2+ph2;              /* lower panel: positivity */
+  var H=b2+50;
+  var yMax=2600, y2Max=20;
+  var band=pw/m.length, bw=band*0.7, GAP=2;      /* 2px surface gap, no strokes */
+  var y  = function(v){ return b1-(v/yMax)*ph1; };
+  var y2 = function(v){ return b2-(v/y2Max)*ph2; };
+  var cx = function(i){ return ml+band*i+band/2; };
   var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" width="'+W+'" height="'+H+'" '+
-        'aria-label="Monthly RDTs performed and test positivity rate, January to August 2026. '+
-        'Testing volume peaks at 2,516 in May and falls to 1,355 in August while positivity rises from 2.6 percent in February to 18.9 percent in July.">';
-  /* gridlines + left axis */
+        'aria-label="Two stacked panels sharing one x-axis, January to August 2026. '+
+        'Upper panel, RDTs performed: testing volume peaks at 2,516 in May and falls to 1,355 in August. '+
+        'Lower panel, test positivity: positivity rises from 2.6 percent in February to 18.9 percent in July, '+
+        'crossing the 9.1 percent programme average between May and June. Neither series is rescaled to fit the other.">';
+
+  /* ---- upper panel: title, gridlines, ticks ---- */
+  s+='<text class="svg-label" x="'+ml+'" y="12" fill="#1A1D21" font-size="12" font-weight="600">RDTs performed (count)</text>';
   for(var g=0; g<=yMax; g+=500){
     s+='<line x1="'+ml+'" x2="'+(ml+pw)+'" y1="'+y(g)+'" y2="'+y(g)+'" stroke="'+C.grid+'"/>';
-    s+='<text class="svg-num" x="'+(ml-8)+'" y="'+(y(g)+4)+'" text-anchor="end" fill="#12324B">'+N(g)+'</text>';
+    s+='<text class="axis-tick svg-num" x="'+(ml-8)+'" y="'+(y(g)+4)+'" text-anchor="end" fill="#5A6472">'+N(g)+'</text>';
   }
-  /* right axis */
-  for(var r=0; r<=y2Max; r+=5){
-    s+='<text class="svg-num" x="'+(ml+pw+8)+'" y="'+(y2(r)+4)+'" fill="#B03A18">'+r+'%</text>';
-  }
-  s+='<text class="svg-label" x="'+ml+'" y="12" fill="#12324B">RDTs performed (count)</text>';
-  s+='<text class="svg-label" x="'+(ml+pw)+'" y="12" text-anchor="end" fill="#B03A18">Test positivity (%)</text>';
-  /* bars */
   m.forEach(function(d,i){
     var x=ml+band*i+(band-bw)/2, un=d.encounters-d.tested;
-    s+='<rect x="'+x+'" y="'+y(d.tested)+'" width="'+bw+'" height="'+(y(0)-y(d.tested))+'" fill="#9BCFCC"><title>'+
-       MONTH_LABEL[i]+' 2026 — tested '+N(d.tested)+' of '+N(d.encounters)+' encounters</title></rect>';
+    var hT=y(0)-y(d.tested);
     if(un>0){
-      s+='<rect x="'+x+'" y="'+y(d.encounters)+'" width="'+bw+'" height="'+(y(d.tested)-y(d.encounters))+'" fill="#C2C9CE"><title>'+
-         MONTH_LABEL[i]+' — not tested '+N(un)+'</title></rect>';
+      var hU=y(d.tested)-y(d.encounters);
+      /* bottom segment squared off, 2px surface gap, rounded data-end on top */
+      s+='<path d="'+barV(x,y(d.tested),bw,hT,0)+'" fill="'+C.blue+'"><title>'+
+         MONTH_LABEL[i]+' 2026 — tested '+N(d.tested)+' of '+N(d.encounters)+' encounters</title></path>';
+      s+='<path d="'+barV(x,y(d.encounters)-GAP,bw,Math.max(hU,1.5),4)+'" fill="'+C.neg+'"><title>'+
+         MONTH_LABEL[i]+' — not tested '+N(un)+'</title></path>';
+    }else{
+      s+='<path d="'+barV(x,y(d.tested),bw,hT,4)+'" fill="'+C.blue+'"><title>'+
+         MONTH_LABEL[i]+' 2026 — tested '+N(d.tested)+' of '+N(d.encounters)+' encounters</title></path>';
     }
-    s+='<text class="svg-label" x="'+(x+bw/2)+'" y="'+(mt+ph+18)+'" text-anchor="middle" fill="#1A1D21">'+MONTH_LABEL[i]+'</text>';
   });
-  s+='<text class="svg-label" x="'+(ml+band*0+band/2)+'" y="'+(mt+ph+32)+'" text-anchor="middle">2026</text>';
-  /* May/Jun inflection rule */
-  var xr=ml+band*5;
-  s+='<line x1="'+xr+'" x2="'+xr+'" y1="'+mt+'" y2="'+(mt+ph)+'" stroke="#C2C9CE" stroke-dasharray="4 3"/>';
-  /* TPR line */
-  var pts=m.map(function(d,i){ return (ml+band*i+band/2)+","+y2(d.tpr); }).join(" ");
-  s+='<polyline points="'+pts+'" fill="none" stroke="'+C.coral+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+  /* direct-label selectively: the May volume peak only */
+  s+='<text class="svg-num" x="'+cx(4)+'" y="'+(y(m[4].tested)-8)+'" text-anchor="middle" fill="#1A1D21" font-weight="600">'+N(m[4].tested)+'</text>';
+  s+='<line x1="'+ml+'" x2="'+(ml+pw)+'" y1="'+b1+'" y2="'+b1+'" stroke="#C2C9CE"/>';
+
+  /* ---- lower panel: title, gridlines, ticks ---- */
+  s+='<text class="svg-label" x="'+ml+'" y="'+(t2-12)+'" fill="#1A1D21" font-size="12" font-weight="600">Test positivity (%)</text>';
+  for(var r=0; r<=y2Max; r+=5){
+    s+='<line x1="'+ml+'" x2="'+(ml+pw)+'" y1="'+y2(r)+'" y2="'+y2(r)+'" stroke="'+C.grid+'"/>';
+    s+='<text class="axis-tick svg-num" x="'+(ml-8)+'" y="'+(y2(r)+4)+'" text-anchor="end" fill="#5A6472">'+r+'%</text>';
+  }
+  /* hairline reference rule — the OBSERVED programme mean, never a target */
+  s+='<line x1="'+ml+'" x2="'+(ml+pw)+'" y1="'+y2(9.1)+'" y2="'+y2(9.1)+'" stroke="#5A6472" stroke-dasharray="6 4"/>';
+  s+='<text class="svg-num" x="'+(ml+pw)+'" y="'+(y2(9.1)-6)+'" text-anchor="end" fill="#5A6472">programme average '+P1(TOT.tpr)+' ('+N(TOT.positives)+' / '+N(TOT.tested)+')</text>';
+  var pts=m.map(function(d,i){ return cx(i)+","+y2(d.tpr); }).join(" ");
+  s+='<polyline points="'+pts+'" fill="none" stroke="'+C.alert+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
   m.forEach(function(d,i){
-    s+='<circle cx="'+(ml+band*i+band/2)+'" cy="'+y2(d.tpr)+'" r="4" fill="'+C.coral+'"><title>'+
+    s+='<circle cx="'+cx(i)+'" cy="'+y2(d.tpr)+'" r="4.5" fill="'+C.alert+'" stroke="#FFFFFF" stroke-width="1.5"><title>'+
        MONTH_LABEL[i]+' — TPR '+P1(d.tpr)+' ('+N(d.pos)+' / '+N(d.tested)+')</title></circle>';
   });
-  /* direct labels */
-  s+='<text class="svg-num" x="'+(ml+band*6+band/2)+'" y="'+(y2(m[6].tpr)-12)+'" text-anchor="middle" '+
-     'fill="#B03A18" font-weight="600" font-size="13">'+P1(m[6].tpr)+'</text>';
-  s+='<text class="svg-num" x="'+(ml+band*4+band/2)+'" y="'+(y(m[4].tested)-6)+'" text-anchor="middle" fill="#12324B" font-weight="600">'+N(m[4].tested)+'</text>';
+  /* direct-label selectively: the July peak and the August endpoint */
+  s+='<text class="svg-num" x="'+cx(6)+'" y="'+(y2(m[6].tpr)-12)+'" text-anchor="middle" fill="#1A1D21" font-weight="600" font-size="13">'+P1(m[6].tpr)+'</text>';
+  s+='<text class="svg-num" x="'+(cx(7)+8)+'" y="'+(y2(m[7].tpr)+4)+'" fill="#1A1D21" font-weight="600">'+P1(m[7].tpr)+'</text>';
+  s+='<line x1="'+ml+'" x2="'+(ml+pw)+'" y1="'+b2+'" y2="'+b2+'" stroke="#C2C9CE"/>';
+
+  /* ---- ONE shared x-axis, drawn once beneath the lower panel ---- */
+  m.forEach(function(d,i){
+    s+='<text class="svg-label" x="'+cx(i)+'" y="'+(b2+18)+'" text-anchor="middle" fill="#1A1D21">'+MONTH_LABEL[i]+'</text>';
+  });
+  s+='<text class="svg-label" x="'+cx(0)+'" y="'+(b2+34)+'" text-anchor="middle">2026</text>';
   s+='</svg>';
 
   var rows = m.map(function(d,i){
@@ -413,19 +496,19 @@ function comboChart(){
   return card({
     cls:"c8", eyebrow:"Row 2 &middot; Case-finding effort vs transmission",
     title:"Monthly testing volume and test positivity",
-    sub:"Bars: RDTs performed (left axis). Line: test positivity, "+P1(TOT.tpr)+" programme mean ("+N(TOT.positives)+" / "+N(TOT.tested)+"). Right axis 0&ndash;20%.",
+    sub:"Two panels, one shared x-axis. Upper: RDTs performed. Lower: test positivity, programme average "+P1(TOT.tpr)+" ("+N(TOT.positives)+" / "+N(TOT.tested)+").",
     body:'<figure>'+s+
       '<div class="legend">'+
-        '<span class="li"><span class="sw" style="background:#9BCFCC"></span>RDTs performed</span>'+
+        '<span class="li"><span class="sw" style="background:#2C5AC4"></span>RDTs performed</span>'+
         '<span class="li"><span class="sw" style="background:#C2C9CE"></span>Not tested (Mar 1, Jun 1, Jul 27, Aug 34)</span>'+
-        '<span class="li"><span class="sw" style="background:#E4572E"></span>Test positivity %</span>'+
-        '<span class="li"><span class="sw" style="background:transparent;border:0;border-left:1px dashed #C2C9CE"></span>May/Jun inflection</span>'+
+        '<span class="li"><span class="sw" style="background:#D03B3B"></span>Test positivity %</span>'+
+        '<span class="li"><span class="sw" style="background:transparent;border:0;border-top:1px dashed #5A6472"></span>Programme average 9.1% &mdash; observed, not a target</span>'+
       '</div>'+
       '<p class="callout">Testing volume falls after May (2,516 &rarr; 1,355) while positivity rises to 18.9% in July. Case-finding effort is declining as transmission peaks.</p>'+
       '</figure>'+
       vat("p1combo","Monthly volume and positivity",
           ["Month","Encounters","Tested","Not tested","Positives","TPR"], rows),
-    foot:"Source: events.csv, "+N(TOT.encounters)+" encounters, Jan&ndash;Aug 2026. Dual axis is used because the divergence between the two series is the finding; each axis carries its unit and its series colour."
+    foot:"Source: events.csv, "+N(TOT.encounters)+" encounters, Jan&ndash;Aug 2026. The two series are drawn on separate panels with their own scales rather than on one dual-axis plot: the alignment of two y-scales in a single frame is arbitrary and manufactures the appearance of a correlation. Shared band positions keep the months comparable column by column."
   });
 }
 
@@ -444,7 +527,7 @@ function donutChart(){
        '<title>'+esc(d.k)+' — '+N(d.v)+' of '+N(tot)+' positives ('+P1(d.v/tot*100)+')</title></circle>';
     acc+=frac;
   });
-  s+='<text class="svg-num" x="'+cx+'" y="'+(cy+6)+'" text-anchor="middle" font-size="40" font-weight="600" fill="#12324B">'+N(tot)+'</text>';
+  s+='<text class="hero-num" x="'+cx+'" y="'+(cy+6)+'" text-anchor="middle" font-size="40" font-weight="600" fill="#1A1D21">'+N(tot)+'</text>';
   s+='<text class="svg-label" x="'+cx+'" y="'+(cy+26)+'" text-anchor="middle" letter-spacing="1">POSITIVES</text>';
   /* Mixed = 1.1% ~ 4deg: leader line to an outside label */
   var midAng=(sp[0].v+sp[1].v+sp[2].v/2)/tot*2*Math.PI - Math.PI/2;
@@ -468,7 +551,7 @@ function donutChart(){
       vat("p1donut","Species split",["Species","Count","% of positives"],
         sp.map(function(d){ return [esc(d.k), N(d.v), P1(d.v/tot*100)]; })
           .concat([["<strong>Total</strong>", N(tot), "100.0%"]])),
-    foot:"Species colour is category, not severity: P. falciparum is navy, never coral."
+    foot:"Species colour is category, not severity. Species take the frozen categorical theme (P. vivax slot 1, P. falciparum slot 2, Mixed slot 3); the status red is reserved for alerts and never appears here."
   });
 }
 
@@ -542,7 +625,7 @@ function matrixCard(){
     '<th scope="col" class="num" style="width:90px">Tested</th>'+
     '<th scope="col" class="num" style="width:140px" title="Data bar scaled to the largest value at the top visible level">Positives</th>'+
     '<th scope="col" class="num" style="width:96px" title="Positives / tested. Sequential scale, fixed transmission bands.">TPR %</th>'+
-    '<th scope="col" class="num" style="width:120px" title="Primaquine referrals / P. vivax positives. Diverging scale, midpoint 44.0% programme average, teal = better.">Pv referral %</th>'+
+    '<th scope="col" class="num" style="width:120px" title="Primaquine referrals / P. vivax positives. Diverging scale, midpoint 44.0% programme average, blue = better.">Pv referral %</th>'+
     '<th scope="col" class="num" style="width:120px" title="Mean reporting lag in days. Diverging scale, midpoint 34.7 days programme clean mean.">Avg lag (days)</th>'+
   '</tr></thead>';
   var totals='<tr class="totals"><td>Programme total &mdash; Zhob district</td>'+
@@ -565,13 +648,13 @@ function matrixCard(){
       '<table id="matrix"><caption class="vsr">Encounters, tests, positives, positivity, primaquine referral and reporting lag by tehsil, union council and facility</caption>'+
       head+'<tbody>'+totals+matrixRows()+'</tbody></table></div>'+
       '<div class="legend">'+
-        '<span class="li"><span class="sw" style="background:#EAF3F3"></span>0&ndash;2.9%</span>'+
-        '<span class="li"><span class="sw" style="background:#C9E3E1"></span>3&ndash;5.9%</span>'+
-        '<span class="li"><span class="sw" style="background:#9BCFCC"></span>6&ndash;9.0%</span>'+
-        '<span class="li"><span class="sw" style="background:#2E7D7A"></span>9.1&ndash;14.9%</span>'+
-        '<span class="li"><span class="sw" style="background:#14595A"></span>15&ndash;24.9%</span>'+
-        '<span class="li"><span class="sw" style="background:#E4572E"></span>25%+</span>'+
-        '<span class="li">Diverging cells: teal = better than programme average (referral midpoint 44.0%, lag midpoint 34.7 days).</span>'+
+        '<span class="li"><span class="sw" style="background:#DCE6F6"></span>0&ndash;2.9%</span>'+
+        '<span class="li"><span class="sw" style="background:#BFD0EC"></span>3&ndash;5.9%</span>'+
+        '<span class="li"><span class="sw" style="background:#8FA9DC"></span>6&ndash;9.0%</span>'+
+        '<span class="li"><span class="sw" style="background:#5A7BC8"></span>9.1&ndash;14.9%</span>'+
+        '<span class="li"><span class="sw" style="background:#2C5AC4"></span>15&ndash;24.9%</span>'+
+        '<span class="li"><span class="sw" style="background:#1D3F8F"></span>25%+</span>'+
+        '<span class="li">Diverging cells: Blue = better than programme average (referral midpoint 44.0%, lag midpoint 34.7 days).</span>'+
       '</div>'+
       vat("p1matrix","Positivity matrix, all levels",
           ["Area","Encounters","Tested","Positives","TPR","Pv referral","Avg lag"], vrows),
@@ -584,15 +667,15 @@ function renderP1(){
   var band='<div class="kpiband">'+
     kpi({eyebrow:"Encounters", value:N(TOT.encounters), sub:"Jan&ndash;Aug 2026 &middot; 183 CHWs, 13 facilities"})+
     kpi({eyebrow:"Tested (RDT)", value:N(TOT.tested), sub:P1(TOT.tested/TOT.encounters*100)+" of encounters &middot; "+N(TOT.untested)+" not tested"})+
-    kpi({eyebrow:"Test positivity", cls:"kpi--teal", value:P1(TOT.tpr), sub:N(TOT.positives)+" / "+N(TOT.tested)+" &middot; peak "+P1(m[6].tpr)+" (Jul)"})+
-    kpi({eyebrow:"Species split", cls:"kpi--teal", value:P1(TOT.pvShare)+" Pv", sub:"Pv "+N(TOT.pv)+" &middot; Pf "+N(TOT.pf)+" &middot; Mixed "+N(TOT.mixed)})+
-    kpi({eyebrow:"Pv primaquine referral", cls:"kpi--teal", value:P1(TOT.pqRate), sub:N(TOT.pqReferred)+" / "+N(TOT.pv)+" referred"})+
+    kpi({eyebrow:"Test positivity", cls:"kpi--blue", value:P1(TOT.tpr), sub:N(TOT.positives)+" / "+N(TOT.tested)+" &middot; peak "+P1(m[6].tpr)+" (Jul)"})+
+    kpi({eyebrow:"Species split", cls:"kpi--blue", value:P1(TOT.pvShare)+" Pv", sub:"Pv "+N(TOT.pv)+" &middot; Pf "+N(TOT.pf)+" &middot; Mixed "+N(TOT.mixed)})+
+    kpi({eyebrow:"Pv primaquine referral", cls:"kpi--blue", value:P1(TOT.pqRate), sub:N(TOT.pqReferred)+" / "+N(TOT.pv)+" referred"})+
   '</div>';
   document.getElementById("panel-1").innerHTML =
     '<h1>Executive surveillance</h1>'+
     '<p class="page-sub">Zhob district, Balochistan &middot; '+esc(DATA.meta.period)+' &middot; source '+esc(DATA.meta.source)+' &middot; data as at '+esc(DATA.meta.generated)+'</p>'+
     band+
-    '<div class="grid">'+comboChart()+donutChart()+'</div>'+
+    '<div class="grid">'+stackedPanels()+donutChart()+'</div>'+
     '<div class="grid">'+matrixCard()+'</div>';
   wireMatrix();
 }
@@ -616,27 +699,59 @@ function wireMatrix(){
 var SPECIES_ORDER = ["Plasmodium vivax","Plasmodium falciparum","Mixed","Negative"];
 var SPECIES_SHORT = {"Plasmodium vivax":"P. vivax","Plasmodium falciparum":"P. falciparum","Mixed":"Mixed","Negative":"Negative / no result"};
 
+/* Spec 07 §6.2 — THREE segments, validated adjacent order:
+   Chloroquine only #0ca35f -> AL #2C5AC4 -> No drug recorded #D03B3B.
+   AL = alOnly + both, so the 8 dual-therapy vivax patients are folded into AL
+   and surfaced separately in a labelled callout (a 0.8% sliver is invisible).
+   Segments sum to n exactly. 2px surface gaps, 4px rounded data-ends. */
 function stacked100(){
-  var W=660, rowH=36, gap=12, labelW=190, barW=W-labelW-8;
+  var W=660, rowH=36, gap=16, labelW=190, barW=W-labelW-8, GAP=2;
   var H=SPECIES_ORDER.length*(rowH+gap);
+  var dual=DATA.treatExclusive["Plasmodium vivax"].both;
   var s='<svg viewBox="0 0 '+W+' '+(H+8)+'" width="'+W+'" height="'+(H+8)+'" role="img" '+
-    'aria-label="Drug administered by species diagnosed, as mutually exclusive shares of each species group. P. vivax n=989: AL only 909, AL plus chloroquine 8, chloroquine only 5, no drug recorded 67. P. falciparum n=174: AL only 161, no drug 13. Mixed n=13: AL only 8, no drug 5. Negative n=11,760: AL only 1, no drug 11,759.">'+
-    '<defs><pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">'+
-    '<rect width="6" height="6" fill="#12324B"/><rect width="2" height="6" fill="#FFFFFF" opacity="0.2"/></pattern></defs>';
+    'aria-label="Drug administered by species diagnosed, as three mutually exclusive shares of each species group: '+
+    'chloroquine only, artemether-lumefantrine, and no drug recorded. '+
+    'P. vivax n=989: chloroquine only 5, AL 917 which includes 8 patients who also received chloroquine, no drug recorded 67. '+
+    'P. falciparum n=174: chloroquine only 0, AL 161, no drug recorded 13. '+
+    'Mixed n=13: AL 8, no drug recorded 5. '+
+    'Negative n=11,760: AL 1, no drug recorded 11,759.">'+
+    '<defs>';
+  SPECIES_ORDER.forEach(function(k,i){
+    var y=i*(rowH+gap);
+    s+='<clipPath id="barclip'+i+'"><rect x="'+labelW+'" y="'+y+'" width="'+barW+'" height="'+rowH+'" rx="4"/></clipPath>';
+  });
+  s+='</defs>';
   SPECIES_ORDER.forEach(function(k,i){
     var d=DATA.treatExclusive[k], y=i*(rowH+gap);
-    var segs=[{n:"AL only",v:d.alOnly,c:(k==="Plasmodium falciparum"?"url(#hatch)":C.al),tc:"#FFFFFF"},
-              {n:"AL + chloroquine",v:d.both,c:"#14595A",tc:"#FFFFFF"},
-              {n:"Chloroquine only",v:d.cqOnly,c:C.cq,tc:"#12324B"},
-              {n:"No drug recorded",v:d.none,c:C.nodrug,tc:"#1A1D21"}];
+    var segs=[{n:"Chloroquine only",v:d.cqOnly,c:C.cq,tc:"#1A1D21"},
+              {n:"AL",v:d.alOnly+d.both,c:C.al,tc:"#FFFFFF"},
+              {n:"No drug recorded",v:d.none,c:C.nodrug,tc:"#FFFFFF"}];
     s+='<text class="svg-label" x="0" y="'+(y+16)+'" fill="#1A1D21" font-size="13" font-weight="600">'+esc(SPECIES_SHORT[k])+'</text>';
     s+='<text class="svg-num" x="0" y="'+(y+32)+'" fill="#5A6472">n = '+N(d.n)+'</text>';
-    var x=labelW;
-    segs.forEach(function(g){
-      if(g.v<=0) return;
+    /* rounded data-ends come from the row clip; 2px gaps come from the fills */
+    s+='<g clip-path="url(#barclip'+i+')">';
+    var x=labelW, drawn=segs.filter(function(g){ return g.v>0; }), thin=[];
+    function seg(g,px,pw){
+      return '<rect x="'+px.toFixed(2)+'" y="'+y+'" width="'+pw.toFixed(2)+'" height="'+rowH+'" fill="'+g.c+'">'+
+        '<title>'+esc(SPECIES_SHORT[k])+' — '+g.n+': '+N(g.v)+' of '+N(d.n)+' ('+P2(g.v/d.n*100)+')</title></rect>';
+    }
+    drawn.forEach(function(g,j){
+      var w=g.v/d.n*barW, last=(j===drawn.length-1);
+      /* the 2px separation is a surface GAP, never a border stroke; it is
+         dropped on segments too thin to survive it, which then keep a 2px
+         minimum painted width so the category stays visible. */
+      var pw=(w>6 && !last) ? w-GAP : w;
+      if(pw<2){ pw=2; thin.push([g,x,pw]); }
+      s+=seg(g,x,pw);
+      x+=w;
+    });
+    /* re-paint slivers on top so a neighbour cannot bury them */
+    thin.forEach(function(t){ s+=seg(t[0],t[1],t[2]); });
+    s+='</g>';
+    /* labels: inside only where they fit with padding, else a leader outside */
+    x=labelW;
+    drawn.forEach(function(g){
       var w=g.v/d.n*barW;
-      s+='<rect x="'+x.toFixed(2)+'" y="'+y+'" width="'+w.toFixed(2)+'" height="'+rowH+'" fill="'+g.c+'">'+
-         '<title>'+esc(SPECIES_SHORT[k])+' — '+g.n+': '+N(g.v)+' of '+N(d.n)+' ('+P2(g.v/d.n*100)+')</title></rect>';
       if(w/barW >= 0.08){
         s+='<text class="svg-num" x="'+(x+w/2).toFixed(2)+'" y="'+(y+rowH/2+4)+'" text-anchor="middle" fill="'+g.tc+'" font-weight="600">'+
            P1(g.v/d.n*100)+'</text>';
@@ -649,31 +764,45 @@ function stacked100(){
       x+=w;
     });
     if(d.n<30){
-      s+='<text class="svg-num" x="'+(labelW-8)+'" y="'+(y+32)+'" text-anchor="end" fill="#A35A05">small n</text>';
+      s+='<text class="svg-num" x="'+(labelW-8)+'" y="'+(y+32)+'" text-anchor="end" fill="#8A5A00">small n</text>';
     }
   });
   s+='</svg>';
+  var callout='<aside class="callout" style="width:220px;flex:none;margin-top:0;border-top:0;border-left:3px solid #2C5AC4">'+
+    '<p class="hero-num" style="font-size:var(--fs-mono-kpi);font-weight:600;line-height:1.1;color:#1A1D21">'+N(dual)+'</p>'+
+    '<p class="card__eyebrow" style="margin-top:4px">P. vivax patients given BOTH AL and chloroquine</p>'+
+    '<p class="tiny" style="margin-top:8px">'+P2(dual/DATA.treatExclusive["Plasmodium vivax"].n*100)+
+    ' of '+N(DATA.treatExclusive["Plasmodium vivax"].n)+' vivax positives. They are counted once, inside the AL segment '+
+    '(AL = AL only '+N(DATA.treatExclusive["Plasmodium vivax"].alOnly)+' + both '+N(dual)+' = '+
+    N(DATA.treatExclusive["Plasmodium vivax"].alOnly+dual)+'), because at '+
+    P2(dual/DATA.treatExclusive["Plasmodium vivax"].n*100)+' a fourth segment is a sliver nobody can read. '+
+    'The count is carried here, in the table view and as its own exception row.</p></aside>';
   var rows=SPECIES_ORDER.map(function(k){
     var d=DATA.treat[k], e=DATA.treatExclusive[k];
-    return [esc(SPECIES_SHORT[k]), N(e.n), N(e.alOnly)+" ("+P1(e.alOnly/e.n*100)+")", N(e.both)+" ("+P2(e.both/e.n*100)+")",
-            N(e.cqOnly)+" ("+P2(e.cqOnly/e.n*100)+")", N(e.none)+" ("+P1(e.none/e.n*100)+")", N(d.PQ)];
+    return [esc(SPECIES_SHORT[k]), N(e.n),
+            N(e.cqOnly)+" ("+P2(e.cqOnly/e.n*100)+")",
+            N(e.alOnly+e.both)+" ("+P1((e.alOnly+e.both)/e.n*100)+")",
+            N(e.alOnly), N(e.both),
+            N(e.none)+" ("+P1(e.none/e.n*100)+")", N(d.PQ)];
   });
   return card({
     cls:"c7", eyebrow:"Row 2 &middot; Protocol",
     title:"Species diagnosed vs drug administered",
     sub:"Each bar is 100% of its own species group; n is printed because 100% bars destroy magnitude.",
-    body:'<figure>'+s+
+    body:'<div class="hstack"><figure style="flex:1;min-width:0">'+s+
       '<div class="legend">'+
-        '<span class="li"><span class="sw" style="background:'+C.al+'"></span>AL only (P. vivax solid)</span>'+
-        '<span class="li"><span class="sw" style="background:'+C.pf+';background-image:linear-gradient(45deg,rgba(255,255,255,.35) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.35) 50%,rgba(255,255,255,.35) 75%,transparent 75%);background-size:6px 6px"></span>AL only (P. falciparum, hatched)</span>'+
-        '<span class="li"><span class="sw" style="background:#14595A"></span>AL + chloroquine (both)</span>'+'<span class="li"><span class="sw" style="background:'+C.cq+'"></span>Chloroquine only</span>'+
+        '<span class="li"><span class="sw" style="background:'+C.cq+'"></span>Chloroquine only</span>'+
+        '<span class="li"><span class="sw" style="background:'+C.al+'"></span>AL (incl. the 8 who also received chloroquine)</span>'+
         '<span class="li"><span class="sw" style="background:'+C.nodrug+'"></span>No drug recorded</span>'+
       '</div>'+
       '<p class="tiny" style="margin-top:8px">Mixed <span class="chip chip--smalln">n = 13 (rate threshold 30)</span> &mdash; percentages shown for completeness only.</p>'+
-      '</figure>'+
+      '</figure>'+callout+'</div>'+
       vat("p2stack","Drug administered by species",
-        ["Species","n","AL only","AL + chloroquine","Chloroquine only","No drug recorded","Primaquine referral (adjunct)"], rows),
-    foot:"Segments are mutually exclusive and sum to exactly 100% of each species group. 8 P. vivax patients received both AL and chloroquine and are counted once, in their own segment. Primaquine referral is an adjunct to AL, not an alternative, so it is not a segment &mdash; stacking it would break the sum to 100%. "+
+        ["Species","n","Chloroquine only","AL (total)","of which AL only","of which AL + chloroquine","No drug recorded","Primaquine referral (adjunct)"], rows),
+    foot:"Three segments, mutually exclusive, summing to exactly 100% of each species group: chloroquine only, AL, no drug recorded. "+
+      "AL = AL only + AL with chloroquine, so the 8 dual-therapy P. vivax patients are counted once and are called out beside the chart rather than drawn as a 0.8% sliver. "+
+      "A four-segment version cannot be coloured safely &mdash; the fourth fill measures below the colourblind separation floor against its neighbours. "+
+      "Primaquine referral is an adjunct to AL, not an alternative, so it is not a segment &mdash; stacking it would break the sum to 100%. "+
       "<br><br>Pf&rarr;AL is 161, not 162. The 162nd record has the drug name typed into the quantity field (80480) and is routed to the exception grid. "+
       "No P. falciparum patient received chloroquine (0 of 174); all 13 chloroquine records are P. vivax. The signal is the inverse: 917 of 989 vivax cases were treated with AL and 13 with chloroquine."
   });
@@ -685,18 +814,18 @@ function funnelCard(){
   var pct=function(v){ return v/pv.n; };
   var s='<svg viewBox="0 0 '+W+' 190" width="'+W+'" height="190" role="img" '+
     'aria-label="Primaquine referral funnel. 989 P. vivax positives, 435 referred for primaquine which is 44.0 percent, leaving 554 not referred which is 56.0 percent.">';
-  var rows=[{l:"P. vivax positives",v:pv.n,c:C.teal},{l:"Referred for primaquine",v:ref,c:C.teal}];
+  var rows=[{l:"P. vivax positives",v:pv.n,c:C.blue},{l:"Referred for primaquine",v:ref,c:C.blue}];
   rows.forEach(function(r,i){
     var y=i*(h+14), w=barMax*pct(r.v);
-    s+='<rect x="0" y="'+y+'" width="'+w.toFixed(1)+'" height="'+h+'" fill="'+r.c+'"><title>'+r.l+': '+N(r.v)+' ('+P1(pct(r.v)*100)+' of '+N(pv.n)+')</title></rect>';
+    s+='<path d="'+barH(0,y,w,h,4,1)+'" fill="'+r.c+'"><title>'+r.l+': '+N(r.v)+' ('+P1(pct(r.v)*100)+' of '+N(pv.n)+')</title></path>';
     s+='<text class="svg-label" x="10" y="'+(y+18)+'" fill="#FFFFFF" font-size="12">'+r.l+'</text>';
     s+='<text class="svg-num" x="10" y="'+(y+36)+'" fill="#FFFFFF" font-size="15" font-weight="600">'+N(r.v)+'  '+P1(pct(r.v)*100)+'</text>';
   });
   var y3=2*(h+14)+8;
   s+='<line x1="0" y1="'+(y3-6)+'" x2="'+W+'" y2="'+(y3-6)+'" stroke="#C2C9CE"/>';
-  s+='<rect x="0" y="'+y3+'" width="'+(barMax*pct(notRef)).toFixed(1)+'" height="'+h+'" fill="#E4572E"><title>Not referred: '+N(notRef)+' of '+N(pv.n)+' ('+P1(pct(notRef)*100)+')</title></rect>';
-  s+='<text class="svg-label" x="10" y="'+(y3+18)+'" fill="#1A1D21" font-size="12" font-weight="600">Not referred</text>';
-  s+='<text class="svg-num" x="10" y="'+(y3+36)+'" fill="#1A1D21" font-size="15" font-weight="600">'+N(notRef)+'  '+P1(pct(notRef)*100)+'</text>';
+  s+='<path d="'+barH(0,y3,barMax*pct(notRef),h,4,1)+'" fill="#D03B3B"><title>Not referred: '+N(notRef)+' of '+N(pv.n)+' ('+P1(pct(notRef)*100)+')</title></path>';
+  s+='<text class="svg-label" x="10" y="'+(y3+18)+'" fill="#FFFFFF" font-size="12" font-weight="600">Not referred</text>';
+  s+='<text class="svg-num" x="10" y="'+(y3+36)+'" fill="#FFFFFF" font-size="15" font-weight="600">'+N(notRef)+'  '+P1(pct(notRef)*100)+'</text>';
   s+='</svg>';
   return card({
     cls:"c5", eyebrow:"Row 2b &middot; Radical cure",
@@ -737,7 +866,7 @@ function exceptionSummary(){
       (r.i?' <button type="button" class="info" title="'+esc(r.i)+'" aria-label="'+esc(r.i)+'">i</button>':'')+'</td>'+
       '<td class="num'+(hi?" count-hi":"")+'">'+(typeof r.c==="number"?N(r.c):r.c)+'</td>'+
       '<td class="tiny">'+r.d+'</td><td class="num">'+r.r+'</td>'+
-      '<td><span class="sev">'+r.s+'<span class="swatch" style="background:'+(hi?"#E4572E":"#A35A05")+'"></span></span></td>'+
+      '<td><span class="sev">'+r.s+'<span class="swatch" style="background:'+(hi?"#D03B3B":"#fab219")+'"></span></span></td>'+
       '<td class="tiny">'+r.o+'</td></tr>';
   });
   body+='</tbody></table></div>';
@@ -777,9 +906,9 @@ function exceptionGrid(){
   }
   shown.forEach(function(r){
     var hi = (r.type==="AL in pregnancy"||r.type==="Positive, no treatment"||r.type==="Treated on negative RDT");
-    body+='<tr><td'+(hi?' style="color:#B03A18;font-weight:600"':'')+'>'+esc(r.type)+'</td>'+
+    body+='<tr><td'+(hi?' style="color:#D03B3B;font-weight:600"':'')+'>'+esc(r.type)+'</td>'+
       '<td class="num">'+esc(r.date)+'</td><td>'+esc(r.chw)+'</td><td>'+esc(r.uc)+'</td>'+
-      '<td>'+esc(r.pt)+'</td><td class="num">'+(r.age===null||r.age===undefined?'&mdash;':N(r.age))+'</td>'+
+      '<td>'+esc(r.pt)+'</td><td class="num">'+(isFinite(r.age)&&r.age!==null&&r.age!==""?N(r.age):'&mdash;')+'</td>'+
       '<td>'+esc(r.sex)+'</td><td>'+esc(r.species||"")+'</td><td class="tiny">'+esc(r.detail)+'</td></tr>';
   });
   body+='</tbody></table></div>';
@@ -796,8 +925,8 @@ function renderP2(){
   var t=DATA.treat, pf=t["Plasmodium falciparum"], pv=t["Plasmodium vivax"];
   var noDrug=pv.none+pf.none+t["Mixed"].none;
   var band='<div class="kpiband kpiband--4">'+
-    kpi({cls:"kpi--cond kpi--teal", eyebrow:"Pf AL adherence", value:P1(pf.AL/pf.n*100), sub:N(pf.AL)+" / "+N(pf.n)+" P. falciparum positives"})+
-    kpi({cls:"kpi--cond kpi--teal", eyebrow:"Pv referred for primaquine", value:P1(TOT.pqRate), sub:N(pv.PQ)+" / "+N(pv.n)+" P. vivax positives"})+
+    kpi({cls:"kpi--cond kpi--blue", eyebrow:"Pf AL adherence", value:P1(pf.AL/pf.n*100), sub:N(pf.AL)+" / "+N(pf.n)+" P. falciparum positives"})+
+    kpi({cls:"kpi--cond kpi--blue", eyebrow:"Pv referred for primaquine", value:P1(TOT.pqRate), sub:N(pv.PQ)+" / "+N(pv.n)+" P. vivax positives"})+
     kpi({cls:"kpi--cond", eyebrow:"Pv treated with chloroquine", value:P1(pv.CQ/pv.n*100), sub:N(pv.CQ)+" / "+N(pv.n)+" &middot; vivax is treated with AL, not CQ"})+
     kpi({cls:"kpi--cond kpi--alert", eyebrow:"Positives with no drug recorded", value:P1(noDrug/TOT.positives*100), sub:N(noDrug)+" / "+N(TOT.positives)+" positives"})+
   '</div>';
@@ -827,8 +956,11 @@ function pyramid(){
     'aria-label="Age and sex distribution of encounters. Male left, female right. Under 5: 1,191 male, 929 female. 5 to 14: 1,829 male, 2,053 female. 15 to 49: 1,373 male, 5,209 female. 50 plus: 71 male, 218 female. Age unknown: 31 male, 92 female.">'+
     '<defs><pattern id="unkhatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">'+
     '<rect width="6" height="6" fill="#C2C9CE"/><rect width="2" height="6" fill="#FFFFFF"/></pattern></defs>';
-  s+='<text class="svg-label" x="'+(cx-cw/2-8)+'" y="12" text-anchor="end" fill="#12324B" font-weight="600">Male</text>';
-  s+='<text class="svg-label" x="'+(cx+cw/2+8)+'" y="12" fill="#3E8F8C" font-weight="600">Female</text>';
+  /* §6.5 — the label wears ink; a swatch beside it carries the series identity */
+  s+='<rect x="'+(cx-cw/2-8-9)+'" y="4" width="9" height="9" rx="2" fill="'+C.male+'"/>'+
+     '<text class="svg-label" x="'+(cx-cw/2-8-14)+'" y="12" text-anchor="end" fill="#1A1D21" font-weight="600">Male</text>';
+  s+='<rect x="'+(cx+cw/2+8)+'" y="4" width="9" height="9" rx="2" fill="'+C.female+'"/>'+
+     '<text class="svg-label" x="'+(cx+cw/2+8+14)+'" y="12" fill="#1A1D21" font-weight="600">Female</text>';
   order.forEach(function(b,i){
     var y=22+i*(rowH+gap), d=DATA.pyramid[b];
     var isUnk = b===unk;
@@ -836,10 +968,11 @@ function pyramid(){
       s+='<line x1="0" x2="'+W+'" y1="'+(y+rowH+gap/2)+'" y2="'+(y+rowH+gap/2)+'" stroke="#C2C9CE"/>';
     }
     var mw=scale(d.Male), fw=scale(d.Female);
-    s+='<rect x="'+(cx-cw/2-mw).toFixed(1)+'" y="'+y+'" width="'+mw.toFixed(1)+'" height="'+rowH+'" fill="'+(isUnk?"url(#unkhatch)":C.male)+'">'+
-       '<title>'+esc(b)+', male: '+N(d.Male)+' encounters</title></rect>';
-    s+='<rect x="'+(cx+cw/2)+'" y="'+y+'" width="'+fw.toFixed(1)+'" height="'+rowH+'" fill="'+(isUnk?"url(#unkhatch)":C.female)+'">'+
-       '<title>'+esc(b)+', female: '+N(d.Female)+' encounters</title></rect>';
+    /* 4px rounded data-ends; squared off against the centre gutter */
+    s+='<path d="'+barH(cx-cw/2-mw,y,mw,rowH,4,-1)+'" fill="'+(isUnk?"url(#unkhatch)":C.male)+'">'+
+       '<title>'+esc(b)+', male: '+N(d.Male)+' encounters</title></path>';
+    s+='<path d="'+barH(cx+cw/2,y,fw,rowH,4,1)+'" fill="'+(isUnk?"url(#unkhatch)":C.female)+'">'+
+       '<title>'+esc(b)+', female: '+N(d.Female)+' encounters</title></path>';
     s+='<text class="svg-num" x="'+(cx-cw/2-mw-6).toFixed(1)+'" y="'+(y+rowH/2+4)+'" text-anchor="end" fill="#1A1D21">'+N(d.Male)+'</text>';
     s+='<text class="svg-num" x="'+(cx+cw/2+fw+6).toFixed(1)+'" y="'+(y+rowH/2+4)+'" fill="#1A1D21">'+N(d.Female)+'</text>';
     s+='<text class="svg-label" x="'+cx+'" y="'+(y+rowH/2+4)+'" text-anchor="middle" fill="#1A1D21" font-size="12" font-weight="600">'+
@@ -888,7 +1021,7 @@ function vulnCard(){
       '<td class="num">'+N(v.disabled)+'</td>'+nullCell()+nullCell()+
       '<td class="tiny">Positives are not disaggregated by disability status in the source file</td></tr>'+
     '</tbody></table>';
-  var tile='<div class="alert-tile"><p class="v">'+N(v.pregAL)+'</p>'+
+  var tile='<div class="alert-tile"><p class="v hero-num">'+N(v.pregAL)+'</p>'+
     '<p class="l">Pregnant patients given AL</p>'+
     '<p class="d">of '+N(v.pregnant)+' pregnant records ('+P1(v.pregAL/v.pregnant*100)+') &middot; review required. '+
     'AL is contraindicated in the first trimester; trimester is not recorded, so each record needs chart review. This is a review flag, not a confirmed adverse event.</p></div>';
@@ -910,10 +1043,10 @@ function tbTile(){
   return '<section class="card c5"><div class="insufficient">'+
     '<p class="eyebrow">TB module &mdash; insufficient data</p>'+
     '<div class="tb-nums">'+
-      '<div><p class="v num">'+N(tb.suspected.Tuberculosis)+'</p><p class="l">suspected for TB</p></div>'+
-      '<div><p class="v num">'+N(tb.suspected.Both)+'</p><p class="l">suspected for both</p></div>'+
-      '<div><p class="v num">'+N(tb.tbResult)+'</p><p class="l">TB result recorded</p></div>'+
-      '<div><p class="v num">'+N(tb.hhScreen)+'</p><p class="l">HH contact screenings</p></div>'+
+      '<div><p class="v hero-num">'+N(tb.suspected.Tuberculosis)+'</p><p class="l">suspected for TB</p></div>'+
+      '<div><p class="v hero-num">'+N(tb.suspected.Both)+'</p><p class="l">suspected for both</p></div>'+
+      '<div><p class="v hero-num">'+N(tb.tbResult)+'</p><p class="l">TB result recorded</p></div>'+
+      '<div><p class="v hero-num">'+N(tb.hhScreen)+'</p><p class="l">HH contact screenings</p></div>'+
     '</div>'+
     '<p class="tiny">Of '+N(TOT.encounters)+' encounters, '+N(tb.suspected.Malaria)+' were suspected for malaria only. '+
     'TB fields are 99.9&ndash;100% null (TB result 99.95%, treatment centre 99.95%, diagnoses 99.97%, TB registration no. 99.98%, relationship with TB patient 99.98%).</p>'+
@@ -1002,7 +1135,7 @@ function scorecard(){
     var title = ({n:"Total encounters recorded",cov:"RDTs performed / encounters",
       completeness:"Share of encounters with event status COMPLETED",
       tpr:"Positives / tested. Sequential scale on fixed transmission bands.",
-      pqRate:"Primaquine referrals / P. vivax positives. Diverging scale, midpoint 44.0%, teal = better.",
+      pqRate:"Primaquine referrals / P. vivax positives. Diverging scale, midpoint 44.0%, blue = better.",
       avgLag:"Mean reporting lag, days. Diverging scale, midpoint 34.7 days.",
       score:"Composite index, midpoint 50. Definition in the card footnote."})[c[0]]||"";
     return '<th scope="col" class="'+(c[2]?"num":"")+'" '+(sortable?'aria-sort="'+aria+'"':'')+' title="'+esc(title)+'">'+
@@ -1112,16 +1245,16 @@ function boxStrip(){
     s+='<line x1="'+x(t)+'" x2="'+x(t)+'" y1="'+(yc-bh/2-10)+'" y2="'+(yc+bh/2+10)+'" stroke="'+C.grid+'"/>';
     s+='<text class="svg-num" x="'+x(t)+'" y="'+(yc+bh/2+26)+'" text-anchor="middle" fill="#5A6472">'+t+'</text>';
   }
-  s+='<line x1="'+x(L.min)+'" x2="'+x(L.p95)+'" y1="'+yc+'" y2="'+yc+'" stroke="#12324B"/>';
+  s+='<line x1="'+x(L.min)+'" x2="'+x(L.p95)+'" y1="'+yc+'" y2="'+yc+'" stroke="#1A1D21"/>';
   [["min",L.min],["p95",L.p95]].forEach(function(p){
-    s+='<line x1="'+x(p[1])+'" x2="'+x(p[1])+'" y1="'+(yc-12)+'" y2="'+(yc+12)+'" stroke="#12324B"/>';
+    s+='<line x1="'+x(p[1])+'" x2="'+x(p[1])+'" y1="'+(yc-12)+'" y2="'+(yc+12)+'" stroke="#1A1D21"/>';
     s+='<text class="svg-num" x="'+x(p[1])+'" y="'+(yc-20)+'" text-anchor="middle" fill="#1A1D21">'+p[0]+' '+p[1]+'</text>';
   });
-  s+='<rect x="'+x(L.p25)+'" y="'+(yc-bh/2)+'" width="'+(x(L.p75)-x(L.p25))+'" height="'+bh+'" fill="'+C.teal+'">'+
+  s+='<rect x="'+x(L.p25)+'" y="'+(yc-bh/2)+'" width="'+(x(L.p75)-x(L.p25))+'" height="'+bh+'" rx="4" fill="'+C.blue+'">'+
      '<title>Interquartile range: 25th percentile 13 days to 75th percentile 47 days</title></rect>';
-  s+='<line x1="'+x(L.median)+'" x2="'+x(L.median)+'" y1="'+(yc-bh/2)+'" y2="'+(yc+bh/2)+'" stroke="#12324B" stroke-width="3"/>';
+  s+='<line x1="'+x(L.median)+'" x2="'+x(L.median)+'" y1="'+(yc-bh/2)+'" y2="'+(yc+bh/2)+'" stroke="#1A1D21" stroke-width="3"/>';
   s+='<text class="svg-num" x="'+x(L.p25)+'" y="'+(yc+bh/2+14)+'" text-anchor="middle" fill="#1A1D21">p25 '+L.p25+'</text>';
-  s+='<text class="svg-num" x="'+x(L.median)+'" y="'+(yc-bh/2-6)+'" text-anchor="middle" fill="#12324B" font-weight="600">median '+L.median+'</text>';
+  s+='<text class="svg-num" x="'+x(L.median)+'" y="'+(yc-bh/2-6)+'" text-anchor="middle" fill="#1A1D21" font-weight="600">median '+L.median+'</text>';
   s+='<text class="svg-num" x="'+x(L.p75)+'" y="'+(yc+bh/2+14)+'" text-anchor="middle" fill="#1A1D21">p75 '+L.p75+'</text>';
   s+='<text class="svg-label" x="'+ml+'" y="'+(H-6)+'">days between visit and event record</text>';
   s+='</svg>';
@@ -1152,10 +1285,10 @@ function scatter(){
   for(var xt=0;xt<=xMax;xt+=500){
     s+='<text class="svg-num" x="'+X(xt)+'" y="'+(mt+ph+18)+'" text-anchor="middle" fill="#5A6472">'+N(xt)+'</text>';
   }
-  s+='<line x1="'+ml+'" x2="'+(ml+pw)+'" y1="'+Y(9.1)+'" y2="'+Y(9.1)+'" stroke="#12324B" stroke-dasharray="6 4"/>';
-  s+='<text class="svg-num" x="'+(ml+pw)+'" y="'+(Y(9.1)-6)+'" text-anchor="end" fill="#12324B">programme average 9.1% (1,176 / 12,936)</text>';
+  s+='<line x1="'+ml+'" x2="'+(ml+pw)+'" y1="'+Y(9.1)+'" y2="'+Y(9.1)+'" stroke="#5A6472" stroke-dasharray="6 4"/>';
+  s+='<text class="svg-num" x="'+(ml+pw)+'" y="'+(Y(9.1)-6)+'" text-anchor="end" fill="#5A6472">programme average 9.1% (1,176 / 12,936)</text>';
   F.forEach(function(f){
-    s+='<circle cx="'+X(f.n).toFixed(1)+'" cy="'+Y(f.tpr).toFixed(1)+'" r="5" fill="'+C.teal+'" fill-opacity="0.85" stroke="#FFFFFF">'+
+    s+='<circle cx="'+X(f.n).toFixed(1)+'" cy="'+Y(f.tpr).toFixed(1)+'" r="5" fill="'+C.blue+'" fill-opacity="0.85" stroke="#FFFFFF">'+
        '<title>'+esc(f.name)+' — '+N(f.n)+' encounters, TPR '+P1(f.tpr)+' ('+N(f.p)+' / '+N(f.t)+')</title></circle>';
     if(f.tpr>12 || f.n>1500){
       s+='<text class="svg-num" x="'+(X(f.n)-8).toFixed(1)+'" y="'+(Y(f.tpr)-8).toFixed(1)+'" text-anchor="end" fill="#1A1D21">'+
