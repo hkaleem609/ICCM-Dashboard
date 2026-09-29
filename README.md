@@ -9,10 +9,15 @@ requests — it renders offline from `file://` exactly as it does on Vercel.
 
 ## Pages
 
-1. **Executive surveillance** — KPI band, monthly volume vs positivity, species split, Tehsil→UC→Facility positivity matrix
-2. **Protocol & safety** — species vs drug administered, primaquine referral funnel, exception register
-3. **Vulnerable demographics** — age–sex pyramid, pregnancy/lactation/disability, TB module status
-4. **Facility / CHW scorecard** — ranked league table, reporting lag, volume vs positivity
+Sidebar navigation across five dashboards, one global filter bar (period, tehsil,
+union council, facility, result, age band, sex), click-to-filter charts, shareable
+filter URLs, CSV export, print, and light/dark themes.
+
+1. **Executive overview** — KPIs with trends, monthly volume vs positivity, species mix, positivity by union council, auto-generated key signals
+2. **Case management & safety** — treatment by species, primaquine referral cascade, monthly adherence, referral vs average by UC, exception register
+3. **Patient demographics** — age–sex pyramid, positivity by age, vulnerable groups, TB module status
+4. **Facility & CHW performance** — facility workload, CHW score distribution, reporting lag, CHW scorecard
+5. **Data quality** — completeness, missing fields, lag spread, benchmark reconciliation
 
 ## Headline findings
 
